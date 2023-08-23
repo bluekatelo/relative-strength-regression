@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import yfinance as yf
 import statsmodels.api as sm
+import os
 
 comparisonStocks = ['MSFT', 'NVDA', 'AAPL', 'NFLX', 'TSLA', 'AMZN', 'FB', 'GOOG', 'ADBE']
 base_stock = 'SPY'
@@ -63,7 +64,7 @@ class Scanner:
         df['relStr'] = df['5_SMA'] - SPY['5_SMA']
 
     def read_pkl(self, df):
-        path = "C:\\Python\\simple_relativeStrength\\dataframes\\%s.pkl" % df
+        path = "models/%s.pkl" % df
         return pd.read_pickle(path)
 
     #fill out stock 
@@ -80,7 +81,9 @@ class Scanner:
                 self.sma(df, '5_SMA', 'pct_move_from_open', 5)
                 backtest.direction(df)
                 self.relativeStrength(df)
-            path = "C:\\Python\\simple_relativeStrength\\dataframes\\%s.pkl" % i
+
+            # set path to models folder
+            path = "models/" + i + ".pkl"
             df.to_pickle(path)
 
     #return a sorted list of stocks with strongest relative strength in last minute
